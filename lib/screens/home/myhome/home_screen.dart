@@ -7,6 +7,7 @@ import 'package:mana_employee_fe/screens/home/myhome/bloc/home_bloc.dart';
 import 'package:mana_employee_fe/screens/home/myhome/components/info_user.dart';
 import 'package:mana_employee_fe/screens/home/myhome/components/loading_error/error.dart';
 import 'package:mana_employee_fe/screens/home/myhome/components/slider_home.dart';
+import 'package:mana_employee_fe/screens/rollcall/rollcall_screen.dart';
 import 'package:mana_employee_fe/security_user/secure_storage_user.dart';
 import 'package:mana_employee_fe/size_config.dart';
 
@@ -23,24 +24,39 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final HomeBloc homeBloc = HomeBloc();
-   late final String? fullName, role, image, email;
+  late final String? fullName, role, image, email;
   final List<Map<String, dynamic>> menuItems = [
-    {
-      'title': 'Phân công lịch trực',
-      'image': 'assets/images/schedule_assi.png'
-    },
-    {'title': 'Điểm danh', 'image': 'assets/images/roll_call.png'},
-    {'title': 'Xin nghĩ phép', 'image': 'assets/images/contract.png'},
-    {
-      'title': 'Báo cáo tiến độ cuối ngày',
-      'image': 'assets/images/process.png'
-    },
-    {
-      'title': 'Đánh giá hiệu quả công việc',
-      'image': 'assets/images/bar-chart.png'
-    },
-    {'title': 'Tin tức', 'image': 'assets/images/news.png'},
-  ];
+  {
+    'title': 'Phân công lịch trực',
+    'image': 'assets/images/schedule_assi.png',
+    'route': '/phan_cong_lich_truc' // Thay thế bằng route name thực tế
+  },
+  {
+    'title': 'Điểm danh',
+    'image': 'assets/images/roll_call.png',
+    'route': 'RollCallScreen.routeName' // Thay thế bằng route name thực tế
+  },
+  {
+    'title': 'Xin nghĩ phép',
+    'image': 'assets/images/contract.png',
+    'route': '/xin_nghi_phep' // Thay thế bằng route name thực tế
+  },
+  {
+    'title': 'Báo cáo tiến độ cuối ngày',
+    'image': 'assets/images/process.png',
+    'route': '/bao_cao_tien_do' // Thay thế bằng route name thực tế
+  },
+  {
+    'title': 'Đánh giá hiệu quả công việc',
+    'image': 'assets/images/bar-chart.png',
+    'route': '/danh_gia_hieu_qua' // Thay thế bằng route name thực tế
+  },
+  {
+    'title': 'Tin tức',
+    'image': 'assets/images/news.png',
+    'route': '/tin_tuc' // Thay thế bằng route name thực tế
+  },
+];
 
   @override
   void initState() {
@@ -55,7 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
     role = await UserSecurityStorage.getRole();
     image = await UserSecurityStorage.getImage();
     email = await UserSecurityStorage.getEmail();
-
   }
 
   @override
@@ -84,12 +99,11 @@ class _HomeScreenState extends State<HomeScreen> {
             final successState = state as HomeLoadedSuccessState;
             return Scaffold(
               drawer: Drawer(
-                child: InfoUser(
-                  fullName: fullName ?? "Not Found", 
-                  role: role ?? "Not Found", 
-                  image: image ?? 'assets/images/anhchinh.png',
-                  email: email ??'Not Found')
-              ),
+                  child: InfoUser(
+                      fullName: fullName ?? "Not Found",
+                      role: role ?? "Not Found",
+                      image: image ?? 'assets/images/anhchinh.png',
+                      email: email ?? 'Not Found')),
               appBar: buildAppBar(),
               body: Container(
                 color: Colors.white,
@@ -140,7 +154,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     elevation: 4,
                                     child: InkWell(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          RollCallScreen.routeName,
+                                          arguments: index, 
+                                        );
+                                      },
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,

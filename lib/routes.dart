@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mana_employee_fe/components_buttons/bottom_navbar_home.dart';
 import 'package:mana_employee_fe/screens/home/myhome/home_screen.dart';
 import 'package:mana_employee_fe/screens/login_register/login/login_screen.dart';
+import 'package:mana_employee_fe/screens/rollcall/rollcall_screen.dart';
 import 'package:mana_employee_fe/screens/splash/splash_screen.dart';
 
 final Map<String , WidgetBuilder> routes ={
@@ -25,6 +26,9 @@ final Map<String , WidgetBuilder> routes ={
 
   //home
   HomeScreen.routeName : (context) => const HomeScreen(),
+
+  //roll-call
+  RollCallScreen.routeName : (context) => const RollCallScreen(), 
   // //category
   // CategoryScreen.routeName :(context) => const CategoryScreen(),
   // MyProfileScreen.routeName :(context) => const MyProfileScreen(),
