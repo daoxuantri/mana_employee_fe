@@ -1,7 +1,6 @@
 import 'package:geolocator/geolocator.dart';
 
 class LocationHelper {
-  /// Lấy vị trí hiện tại của thiết bị (nếu quyền được cấp)
   static Future<Position?> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -21,8 +20,18 @@ class LocationHelper {
       }
     }
 
-    return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
+    if (permission == LocationPermission.deniedForever) {
+      print("Quyền GPS bị từ chối vĩnh viễn, hãy vào cài đặt để bật.");
+      return null;
+    }
+
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.bestForNavigation,
     );
+
+    print("📍 Vĩ độ: ${position.latitude}, Kinh độ: ${position.longitude}");
+
+    return position;
   }
 }
+

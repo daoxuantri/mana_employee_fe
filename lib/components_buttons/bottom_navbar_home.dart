@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mana_employee_fe/components_buttons/colors.dart';
 import 'package:mana_employee_fe/screens/home/myhome/home_screen.dart';
+import 'package:mana_employee_fe/screens/profile/profile_screen.dart';
 import 'package:mana_employee_fe/size_config.dart'; 
 
 class NavigatorBottomBarHome extends StatefulWidget {
@@ -25,7 +26,7 @@ class _NavigatorBottomBarState extends State<NavigatorBottomBarHome> {
   List<String> listAssetsIcons = [
     "IC_Dashboard.png",
     "IC_Category.png",
-    "IC_Cart.png",
+    "IC_Calendar.png",
     "IC_Profile.png",
   ];
 
@@ -42,7 +43,9 @@ class _NavigatorBottomBarState extends State<NavigatorBottomBarHome> {
     const HomeScreen(),
     // const CategoryScreen(),
     // const MyCartScreen(),
-    // const  MyProfileScreen()
+    const HomeScreen(),
+    const HomeScreen(),
+    const  MyProfileScreen()
   ];
 
   @override

@@ -5,7 +5,12 @@ abstract class RollCallEvent {
   const RollCallEvent();
 }
 
-class RollCallInitialEvent extends RollCallEvent {}
+class RollCallInitialEvent extends RollCallEvent {
+  final String? employeeId;
+  const RollCallInitialEvent({
+    required this.employeeId
+  });
+}
 
 class RollCallErrorScreenToLoginEvent extends RollCallEvent {}
 

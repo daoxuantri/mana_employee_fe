@@ -14,11 +14,24 @@ class RollCallLoadingState extends RollCallState {}
 enum RollCallStatus {
   checkedIn,
   checkedOut,
+  none
 }
 class RollCallLoadedSuccessState extends RollCallState {
   final RollCallStatus status;
-  RollCallLoadedSuccessState({required this.status});
+  final String? morningCheckInTime;
+  final String? morningCheckOutTime;
+  final String? afternoonCheckInTime;
+  final String? afternoonCheckOutTime;
+
+  RollCallLoadedSuccessState({
+    required this.status,
+    this.morningCheckInTime,
+    this.morningCheckOutTime,
+    this.afternoonCheckInTime,
+    this.afternoonCheckOutTime,
+  });
 }
+
 
 class RollCallErrorState extends RollCallState {
   final String errorMessage;
