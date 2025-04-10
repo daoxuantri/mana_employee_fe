@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:mana_employee_fe/security_user/secure_storage_user.dart';
 
 class ApiServiceAuth {
-  static const String baseUrl = 'http://192.168.1.15:4000';
+  static const String baseUrl = 'http://192.168.1.17:4000';
 
   String getCookie(String header) {
     int refreshTokenStart = header.indexOf("refreshToken=");

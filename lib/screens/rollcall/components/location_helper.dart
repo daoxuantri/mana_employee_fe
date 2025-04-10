@@ -26,10 +26,11 @@ class LocationHelper {
     }
 
     Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.bestForNavigation,
+      desiredAccuracy: LocationAccuracy.high,
     );
 
-    print("📍 Vĩ độ: ${position.latitude}, Kinh độ: ${position.longitude}");
+    print("📍 Vĩ độ: ${position.latitude.toStringAsPrecision(15)}, "
+      "Kinh độ: ${position.longitude.toStringAsPrecision(15)}");
 
     return position;
   }

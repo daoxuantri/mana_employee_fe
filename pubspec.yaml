@@ -19,6 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   intl: ^0.18.1
   bloc:
   flutter_bloc:
@@ -40,6 +42,8 @@ dependencies:
   geolocator: ^10.0.0
   device_preview: ^1.1.0
   qr_flutter: ^4.1.0
+  google_maps_flutter: ^2.5.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

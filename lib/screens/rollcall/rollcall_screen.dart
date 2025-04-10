@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mana_employee_fe/screens/rollcall/bloc/rollcall_bloc.dart';
 import 'package:mana_employee_fe/screens/rollcall/components/location_helper.dart';
 import 'package:mana_employee_fe/security_user/secure_storage_user.dart';
@@ -27,13 +28,8 @@ class _RollCallScreenState extends State<RollCallScreen> {
   }
 
   Future<void> _loadEmployeeId() async {
-    employeeId = await UserSecurityStorage.getId();
-    // if (employeeId != null) {
-    //   setState(() {
-    //     _isEmployeeIdLoaded = true;
-    //   });
-    //   rollCallBloc.add(RollCallInitialEvent(employeeId: employeeId!));
-    // }
+    // employeeId = await UserSecurityStorage.getId();
+    employeeId = '67cdb950d434b69cb94ec7d6';
     rollCallBloc.add(RollCallInitialEvent(employeeId: employeeId!));
   }
 
@@ -52,6 +48,7 @@ class _RollCallScreenState extends State<RollCallScreen> {
           case RollCallLoadedSuccessState:
             final successState = state as RollCallLoadedSuccessState;
             return Scaffold(
+              backgroundColor: Colors.white,
               appBar: AppBar(
                 title: Text(
                   "Chấm công",
@@ -81,18 +78,30 @@ class _RollCallScreenState extends State<RollCallScreen> {
                         'Hoạt động điểm danh trong ngày hôm nay',
                         style: TextStyle(fontSize: 15, color: Colors.red),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: getProportionateScreenHeight(10)),
                       // Bảng check-in/check-out
                       DataTable(
+                        border: TableBorder.all(color: Colors.black, width: 1),
                         columns: const [
-                          DataColumn(label: Text('Buổi')),
-                          DataColumn(label: Text('Check In')),
-                          DataColumn(label: Text('Check Out')),
+                          DataColumn(
+                              label: Text('Tên',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black))),
+                          DataColumn(
+                              label: Text('Thời gian',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black))),
                         ],
                         rows: [
                           DataRow(
+                            color: MaterialStateProperty.resolveWith<Color?>(
+                                (states) => Colors.white),
                             cells: [
-                              const DataCell(Text('Sáng')),
+                              const DataCell(Text('Check In',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold))),
                               DataCell(
                                 Text(
                                   successState.morningCheckInTime != null
@@ -102,13 +111,15 @@ class _RollCallScreenState extends State<RollCallScreen> {
                                   style: const TextStyle(color: Colors.black),
                                 ),
                               ),
-                              const DataCell(Text('Chưa check')),
                             ],
                           ),
                           DataRow(
+                            color: MaterialStateProperty.resolveWith<Color?>(
+                                (states) => Colors.white),
                             cells: [
-                              const DataCell(Text('Chiều')),
-                              const DataCell(Text('Chưa check')),
+                              const DataCell(Text('Check Out',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold))),
                               DataCell(
                                 Text(
                                   successState.afternoonCheckOutTime != null
@@ -140,14 +151,22 @@ class _RollCallScreenState extends State<RollCallScreen> {
   /// Xử lý Check-in / Check-out
   void _handleRollCall(bool isCheckedIn) async {
     Position? position = await LocationHelper.determinePosition();
-
     if (position == null) {
       _showSnackbar("Không thể lấy vị trí. Kiểm tra GPS!", Colors.red);
       return;
     }
+    double allowedRadius = 100; // 100m là bán kính cho phép
+    double branchLatitude =
+        10.346246800237312; // Toạ độ chi nhánh cần thay đổi cho đúng
+    double branchLongitude = 107.09377785263734;
 
-    print(
-        "📍 Vị trí lấy được: Latitude: ${position.latitude}, Longitude: ${position.longitude}");
+    double distance = Geolocator.distanceBetween(
+        position.latitude, position.longitude, branchLatitude, branchLongitude);
+
+    if (distance > allowedRadius) {
+      _showOutOfRangeDialog(distance, position.latitude, position.longitude);
+      return;
+    }
 
     if (employeeId != null) {
       rollCallBloc.add(
@@ -163,11 +182,137 @@ class _RollCallScreenState extends State<RollCallScreen> {
                 employeeId: employeeId!,
               ),
       );
-
       _showSnackbar(
           isCheckedIn ? "Check-out thành công!" : "Check-in thành công!",
           Colors.green);
     }
+  }
+
+  void _showOutOfRangeDialog(
+      double distance, double latitude, double longitude) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Chấm công chưa hợp lệ",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: getProportionateScreenHeight(10)),
+
+                // 🟢 Nội dung thông báo chính
+                Text(
+                  "Vị trí của bạn (${distance.toStringAsFixed(0)}m), ngoài bán kính cho phép (30m).",
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: getProportionateScreenHeight(6)),
+
+                Text(
+                  "Vui lòng kiểm tra lại GPS và thử lại.",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: getProportionateScreenHeight(10)),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Bước 1: ",
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w500)),
+                    Expanded(
+                      child: Text(
+                        "Tắt/bật thiết lập định vị GPS (dịch vụ vị trí) trên điện thoại hoặc kiểm tra vị trí bằng Google Maps và thử lại.",
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: getProportionateScreenHeight(6)),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Bước 2: ",
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w500)),
+                    Expanded(
+                      child: Text(
+                        "Khởi động lại ứng dụng và chấm lại.",
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
+
+                // 🟢 Bản đồ Google hiển thị vị trí hiện tại và vị trí văn phòng
+                // SizedBox(
+                //   height: getProportionateScreenHeight(
+                //       300), // Tăng kích thước để đảm bảo hiển thị
+                //   width: double.infinity,
+                //   child: ClipRRect(
+                //     borderRadius: BorderRadius.circular(10),
+                //     child: GoogleMap(
+                //       initialCameraPosition: CameraPosition(
+                //         target: LatLng(latitude, longitude),
+                //         zoom: 16,
+                //       ),
+                //       onMapCreated: (GoogleMapController controller) {
+                //         // Lưu trữ controller nếu cần thiết
+                //       },
+                //       markers: {
+                //         Marker(
+                //           markerId: MarkerId("currentLocation"),
+                //           position: LatLng(latitude, longitude),
+                //           infoWindow: InfoWindow(title: "Vị trí của bạn"),
+                //           icon: BitmapDescriptor.defaultMarkerWithHue(
+                //             BitmapDescriptor.hueBlue,
+                //           ),
+                //         ),
+                //         Marker(
+                //           markerId: MarkerId("officeLocation"),
+                //           position:
+                //               LatLng(10.346246800237312, 107.09377785263734),
+                //           infoWindow: InfoWindow(title: "Văn phòng"),
+                //           icon: BitmapDescriptor.defaultMarkerWithHue(
+                //             BitmapDescriptor.hueRed,
+                //           ),
+                //         ),
+                //       },
+                //     ),
+                //   ),
+                // ),
+
+                SizedBox(height: getProportionateScreenHeight(16)),
+
+                // 🟢 Nút thử lại
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
+                    ),
+                    child: Text("Thử lại", style: TextStyle(fontSize: 16)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   /// Hiển thị Snackbar

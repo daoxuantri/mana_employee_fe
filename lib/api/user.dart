@@ -5,7 +5,7 @@ import 'package:mana_employee_fe/model/user/get_infor_user_model.dart';
 import 'package:mana_employee_fe/model/user/info_user_respone.dart';
 import 'package:mana_employee_fe/security_user/secure_storage_user.dart';
 class ApiServiceUsers {
-  static const String baseUrl = 'http://192.168.1.15:4000';
+  static const String baseUrl = 'http://192.168.1.17:4000';
 
   //POST
   Future<void> signUpMini(String email, String phone, String password,

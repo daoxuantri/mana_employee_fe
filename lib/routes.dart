@@ -1,8 +1,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:mana_employee_fe/components_buttons/bottom_navbar_home.dart';
+import 'package:mana_employee_fe/screens/assign_work/assignwork_screen.dart';
+import 'package:mana_employee_fe/screens/dutyschedule/duty_schedule_screen.dart';
+import 'package:mana_employee_fe/screens/home/leaveapplication/leave_application_screen.dart';
 import 'package:mana_employee_fe/screens/home/myhome/home_screen.dart';
 import 'package:mana_employee_fe/screens/login_register/login/login_screen.dart';
+import 'package:mana_employee_fe/screens/profile/logged_in/components/personal_information_screen.dart';
 import 'package:mana_employee_fe/screens/profile/profile_screen.dart';
 import 'package:mana_employee_fe/screens/rollcall/rollcall_screen.dart';
 import 'package:mana_employee_fe/screens/splash/splash_screen.dart';
@@ -27,12 +31,18 @@ final Map<String , WidgetBuilder> routes ={
 
   //home
   HomeScreen.routeName : (context) => const HomeScreen(),
+  // class children (home)
+  LeaveApplicationScreen.routeName : (context) => LeaveApplicationScreen(),
+  AssignWorkScreen.routeName : (context) => const AssignWorkScreen(),
+  DutyScheduleScreen.routeName : (context) => const DutyScheduleScreen(),
 
   //roll-call
   RollCallScreen.routeName : (context) => const RollCallScreen(), 
-  // //category
-  // CategoryScreen.routeName :(context) => const CategoryScreen(),
+  
+
   MyProfileScreen.routeName :(context) => const MyProfileScreen(),
+  //children of My Profile Screen
+  PersonalInformationScreen.routeName : (context) => const PersonalInformationScreen(),
   // //user 
 
   // /*-----------------------------------------------------------------------------*/

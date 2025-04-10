@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mana_employee_fe/model/user/get_infor_user_model.dart';
 import 'package:mana_employee_fe/screens/profile/components/container_rad35.dart';
+import 'package:mana_employee_fe/screens/profile/logged_in/components/personal_information_screen.dart';
 import 'package:mana_employee_fe/size_config.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../bloc/profile_bloc.dart';
@@ -43,12 +44,17 @@ class BodySuccess extends StatelessWidget {
                       ),
                       ),
                       Spacer(),
-                      Text(
-                        'Sửa',
-                        style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.pushNamed(context ,PersonalInformationScreen.routeName);
+                        },
+                        child: Text(
+                          'Sửa',
+                          style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500),
+                        ),
                       )
                     ],
                   ),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mana_employee_fe/components_buttons/loading.dart';
+import 'package:mana_employee_fe/screens/dutyschedule/duty_schedule_screen.dart';
+import 'package:mana_employee_fe/screens/home/leaveapplication/leave_application_screen.dart';
 import 'package:mana_employee_fe/screens/home/myhome/bloc/home_bloc.dart';
 import 'package:mana_employee_fe/screens/home/myhome/components/info_user.dart';
 import 'package:mana_employee_fe/screens/home/myhome/components/loading_error/error.dart';
@@ -29,17 +31,17 @@ class _HomeScreenState extends State<HomeScreen> {
   {
     'title': 'Phân công lịch trực',
     'image': 'assets/images/schedule_assi.png',
-    'route': '/phan_cong_lich_truc' // Thay thế bằng route name thực tế
+    'route': DutyScheduleScreen.routeName
   },
   {
     'title': 'Điểm danh',
     'image': 'assets/images/roll_call.png',
-    'route': 'RollCallScreen.routeName' // Thay thế bằng route name thực tế
+    'route': RollCallScreen.routeName // Thay thế bằng route name thực tế
   },
   {
     'title': 'Xin nghĩ phép',
     'image': 'assets/images/contract.png',
-    'route': '/xin_nghi_phep' // Thay thế bằng route name thực tế
+    'route': LeaveApplicationScreen.routeName
   },
   {
     'title': 'Báo cáo tiến độ cuối ngày',
@@ -157,8 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onTap: () {
                                         Navigator.pushNamed(
                                           context,
-                                          RollCallScreen.routeName,
-                                          arguments: index, 
+                                          menuItems[index]['route'] 
                                         );
                                       },
                                       child: Column(
@@ -168,11 +169,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Image.asset(
                                             menuItems[index]['image'],
                                             height:
-                                                40, // Chiều cao của hình ảnh
+                                                getProportionateScreenHeight(40), // Chiều cao của hình ảnh
                                             width:
-                                                40, // Chiều rộng của hình ảnh
+                                                getProportionateScreenWidth(40), // Chiều rộng của hình ảnh
                                           ),
-                                          SizedBox(height: 10),
+                                          SizedBox(height: getProportionateScreenHeight(10)),
                                           Text(
                                             menuItems[index]['title'],
                                             textAlign: TextAlign.center,

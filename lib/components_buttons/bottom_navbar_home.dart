@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mana_employee_fe/components_buttons/colors.dart';
+import 'package:mana_employee_fe/screens/assign_work/assignwork_screen.dart';
 import 'package:mana_employee_fe/screens/home/myhome/home_screen.dart';
 import 'package:mana_employee_fe/screens/profile/profile_screen.dart';
 import 'package:mana_employee_fe/size_config.dart'; 
@@ -43,7 +44,7 @@ class _NavigatorBottomBarState extends State<NavigatorBottomBarHome> {
     const HomeScreen(),
     // const CategoryScreen(),
     // const MyCartScreen(),
-    const HomeScreen(),
+    const AssignWorkScreen(),
     const HomeScreen(),
     const  MyProfileScreen()
   ];

@@ -4,13 +4,14 @@ import 'dart:convert';
 import 'package:mana_employee_fe/model/rollcall/rollcall_respone.dart';
 import 'package:mana_employee_fe/model/rollcall/rollcall_status_respone.dart'; 
 class ApiServiceRollCall {
-  static const String baseUrl = 'http://192.168.1.15:4000';
+  static const String baseUrl = 'http://192.168.1.17:4000';
 
   Future<RollCallRespone> checkIn (String employeeId , double longitude, double latitude) async {
   var url = Uri.parse('$baseUrl/checkins/checkin');
 
     var headers = {
       'accept': 'application/json',
+      'Content-Type': 'application/json',
     };
     var body = json.encode({
       'employeeId': employeeId,

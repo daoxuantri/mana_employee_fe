@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mana_employee_fe/size_config.dart';
 
 class AssignWorkScreen extends StatefulWidget {
+  static String routeName = 'assignwork';
   const AssignWorkScreen({super.key});
 
   @override

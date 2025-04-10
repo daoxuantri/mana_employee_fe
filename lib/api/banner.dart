@@ -3,7 +3,7 @@ import 'package:mana_employee_fe/model/home/banners/banners.dart';
 import 'dart:convert';
 import 'package:mana_employee_fe/model/home/banners/respone_banner_model.dart';
 class ApiServiceBanner {
-  static const String baseUrl = 'http://192.168.1.15:4000';
+  static const String baseUrl = 'http://192.168.1.17:4000';
 
   Future<List<BannerDataModel>> getBanner () async {
   var url = Uri.parse('$baseUrl/banners');
