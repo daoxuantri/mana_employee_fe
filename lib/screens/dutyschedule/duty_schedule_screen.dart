@@ -96,12 +96,28 @@ class _DutyScheduleScreenState extends State<DutyScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return BlocConsumer<DutyScheduleBloc, DutyScheduleState>(
-      // buildWhen: ,
-      // listenWhen: ,
-      // builder: builder, 
-      // listener: listener
-      );
+    // return BlocConsumer<DutyScheduleBloc, DutyScheduleState>(
+    //   buildWhen: ,
+    //   listenWhen: ,
+    //   builder: builder, 
+    //   listener: listener
+    //   );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Lịch trực nhật',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        centerTitle: true,
+      ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16.0),
+        itemCount: dutySchedule.length,
+        itemBuilder: (context, index) {
+          return _buildDutyCard(dutySchedule[index]);
+        },
+      ),
+    );
 
     
   }

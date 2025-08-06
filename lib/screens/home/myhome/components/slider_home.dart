@@ -1,4 +1,4 @@
- import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart' hide CarouselController;
 import 'package:mana_employee_fe/model/home/banners/banners.dart';
 import 'package:mana_employee_fe/screens/home/myhome/bloc/home_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
